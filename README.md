@@ -4,70 +4,104 @@
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# Backend Web Service for User Data Retrieval
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This repository contains the backend service built with Nest.js that connects to a MongoDB database. The service is designed to retrieve user data, specifically logs of the URLs they have visited on the frontend web app. The API routes are guarded by authorization to ensure secure access to the data.
 
-## Installation
+## Table of Contents
 
-```bash
-$ npm install
-```
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+  - [Authorization](#authorization)
+  - [API Endpoints](#api-endpoints)
 
-## Running the app
+## Features
 
-```bash
-# development
-$ npm run start
+- Secure user data retrieval.
+- Integration with MongoDB for storing and retrieving URL visit logs.
+- Authorization guards on API routes.
+- Built with Nest.js, a progressive Node.js framework.
 
-# watch mode
-$ npm run start:dev
+## Getting Started
 
-# production mode
-$ npm run start:prod
-```
+### Prerequisites
 
-## Test
+Before you begin, ensure you have met the following requirements:
 
-```bash
-# unit tests
-$ npm run test
+- Node.js and npm installed.
+- MongoDB database set up and running.
 
-# e2e tests
-$ npm run test:e2e
+### Installation
 
-# test coverage
-$ npm run test:cov
-```
+1. Clone this repository:
 
-## Support
+   ```bash
+   git clone https://github.com/austinb847/top-news-backend.git
+   cd top-news-backend
+   ```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+2. Install the dependencies:
 
-## Stay in touch
+   ```bash
+    npm install
+   ```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+3. Set up the environment variables:
 
-## License
+   ```bash
+   cp .env.example .env
+   ```
 
-  Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+4. Start the server:
+
+   ```bash
+    npm run start:dev
+   ```
+
+## Usage
+
+### Authorization
+
+The API routes are guarded by authorization. To access the routes, you will need to provide a valid JWT token in the `Authorization` header of the request. The token can be obtained by logging in to the frontend web app.
+
+### API Endpoints
+
+#### GET `/users/:userId/events`: Get logs of URLs visited by a user
+
+- **Description**: Get logs of URLs visited by a user.
+- **Authorization**: Required.
+
+##### Request
+
+- **URL parameters**:
+  - `userId`: The ID of the user whose logs are to be retrieved.
+
+##### Response
+
+- **Status code**: `200 OK`
+- **Body**: An array of objects, each representing a log entry. Each object has the following properties:
+  - `url`: The URL visited by the user.
+  - `timestamp`: The timestamp of the visit.
+
+#### POST `/users/:userId/events`: Add a log of a URL visited by a user
+
+- **Description**: Add a log of a URL visited by a user.
+- **Authorization**: Required.
+
+##### Request
+
+- **URL parameters**:
+  - `userId`: The ID of the user whose logs are to be retrieved.
+- **Body**: An object representing the log entry. It has the following properties:
+  - `url`: The URL visited by the user.
+
+##### Response
+
+- **Status code**: `201 Created`
+- **Body**: An object representing the log entry. It has the following properties:
+  - `url`: The URL visited by the user.
+  - `timestamp`: The timestamp of the visit.
